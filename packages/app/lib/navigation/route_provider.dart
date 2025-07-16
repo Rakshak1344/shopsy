@@ -1,3 +1,4 @@
+import 'package:app/features/products/views/states/products_page.dart';
 import 'package:app/navigation/app_route_name.dart';
 import 'package:core/arch/navigation/route_provider.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +11,7 @@ class RoutesProvider extends RouteProvider {
       GoRoute(
         path: '/',
         name: AppRouteName.root,
-        builder:
-            (BuildContext context, GoRouterState state) =>
-                Scaffold(appBar: AppBar(title: Text("Shopsy"))),
+        builder: (BuildContext context, GoRouterState state) => ProductsPage(),
         routes: [],
       ),
     ];
