@@ -1,3 +1,42 @@
 name: shopsy
 packages:
   - packages/*
+
+
+scripts:
+  analyze:
+    run: flutter analyze .
+    exec:
+      concurrency: 1
+    description: |
+      Run `flutter analyze` in all packages.
+       - Note: you can also rely on your IDEs Dart Analysis / Issues window.
+
+  format:
+    exec: dart format lib --fix
+    description: |
+      Run `dart format` in all packages.
+
+  gen:
+    name: "gen"
+    description: 'Build generated files from build_runner'
+    run: flutter pub run build_runner build --delete-conflicting-outputs
+    exec:
+      orderDependents: true
+
+  gen:watch:
+    name: "gen:watch"
+    description: 'Build generated files from build_runner and watch them for changes'
+    run: flutter pub run build_runner watch --delete-conflicting-outputs
+    exec:
+      orderDependents: true
+    packageFilters:
+      dependsOn: build_runner
+
+  # Generate Assets
+  gen:assets:
+    name: "gen:assets"
+    description: 'Generate assets using spider'
+    exec: spider build
+    packageFilters:
+      fileExists: spider.yaml
