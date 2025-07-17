@@ -18,7 +18,7 @@ class FakeNetworkProductRepository implements NetworkProductRepository {
       name: 'Product ${i + 1}',
       description:
           'This is a detailed and engaging description for mock product number ${i + 1}.',
-      imageUrl: 'https://placehold.co/600x400/EEE/31343C?text=Product+${i + 1}',
+      imageUrl: 'https://picsum.photos/id/${i + 1}/600/400',
       availableQuantity: (i + 1) * 5,
       price: 19.99 * (i + 1), // Added the new price field
     ),

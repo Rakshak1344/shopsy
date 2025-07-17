@@ -26,7 +26,18 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Shopsy")),
+      appBar: AppBar(
+        title: Text("Shopsy"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () async {
+              await ref.read(productStateProvider.notifier).fetchProducts(1);
+            },
+          ),
+          SizedBox(width: 18),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: buildProductsOnState(),
