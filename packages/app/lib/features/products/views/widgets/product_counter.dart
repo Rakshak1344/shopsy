@@ -22,36 +22,13 @@ class _ProductCounterState extends ConsumerState<ProductCounter> {
       cartItemDetailStateProvider(widget.product.id.toString()),
     );
 
-    // When quantity is 0, show the 'Add' button.
     if (cartItem.value == null) {
-      return SizedBox(
-        height: 40,
-        child: OutlinedButton.icon(
-          icon: const Icon(Icons.add, size: 18),
-          label: const Text('Add'),
-          onPressed:
-              () => ref
-                  .read(cartItemStateProvider.notifier)
-                  .updateCartItem(widget.product.id, CounterAction.increment),
-          style: OutlinedButton.styleFrom(
-            visualDensity: VisualDensity.compact,
-            side: BorderSide(
-              color:
-                  widget.product.availableQuantity == 0
-                      ? Colors.grey.shade400
-                      : Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ),
-      );
+      return buildAddButton(context);
     }
-    // Otherwise, show the counter UI.
-    return Container(
+
+    return SizedBox(
       height: 40,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(30),
-      ),
+
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -72,7 +49,8 @@ class _ProductCounterState extends ConsumerState<ProductCounter> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              if (cartItem.value!.quantity >= widget.product.availableQuantity) {
+              if (cartItem.value!.quantity >=
+                  widget.product.availableQuantity) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
@@ -90,6 +68,29 @@ class _ProductCounterState extends ConsumerState<ProductCounter> {
             splashRadius: 20,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget buildAddButton(BuildContext context) {
+    return SizedBox(
+      height: 40,
+      child: OutlinedButton.icon(
+        icon: const Icon(Icons.add, size: 18),
+        label: const Text('Add'),
+        onPressed:
+            () => ref
+                .read(cartItemStateProvider.notifier)
+                .updateCartItem(widget.product.id, CounterAction.increment),
+        style: OutlinedButton.styleFrom(
+          visualDensity: VisualDensity.compact,
+          side: BorderSide(
+            color:
+                widget.product.availableQuantity == 0
+                    ? Colors.grey.shade400
+                    : Theme.of(context).colorScheme.primary,
+          ),
+        ),
       ),
     );
   }

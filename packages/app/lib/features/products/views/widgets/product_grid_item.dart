@@ -1,7 +1,7 @@
 import 'package:app/features/products/data/models/product.dart';
 import 'package:app/features/products/views/widgets/product_counter.dart';
+import 'package:app/features/products/views/widgets/product_image.dart';
 import 'package:app/navigation/app_route_name.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -38,7 +38,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
               children: [
                 Column(
                   children: [
-                    _buildImage(),
+                    ProductImage(imageUrl: widget.product.imageUrl),
                     const SizedBox(height: 12),
                     _buildTitle(context),
                     const SizedBox(height: 4),
@@ -57,39 +57,6 @@ class _ProductGridItemState extends State<ProductGridItem> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  /// Builds the network image with caching, placeholder, and error widgets.
-  Widget _buildImage() {
-    return ClipOval(
-      child: CachedNetworkImage(
-        imageUrl: widget.product.imageUrl,
-        height: 60,
-        width: 60,
-        fit: BoxFit.cover,
-        fadeInDuration: const Duration(milliseconds: 300),
-        progressIndicatorBuilder:
-            (context, url, downloadProgress) => CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey[200],
-              child: CircularProgressIndicator(
-                value: downloadProgress.progress,
-                strokeWidth: 2.0,
-                color: Colors.grey[400],
-              ),
-            ),
-        // Your existing error widget is perfect.
-        errorWidget:
-            (context, url, error) => CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey[200],
-              child: const Icon(
-                Icons.image_not_supported_outlined,
-                color: Colors.grey,
-              ),
-            ),
       ),
     );
   }
