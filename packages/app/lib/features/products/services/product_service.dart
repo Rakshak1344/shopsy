@@ -31,6 +31,8 @@ class ProductService {
     return _localProductRepository.getById(id);
   }
 
+
+
   Future<void> getProducts(int page, [int perPage = 20]) async {
     var response = await _networkProductRepository.getProducts(page, perPage);
 

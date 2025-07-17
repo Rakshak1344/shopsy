@@ -98,12 +98,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ProductCounter(
-                    quantity: 0,
-                    availableQuantity: product.availableQuantity,
-                    onIncrement: () {},
-                    onDecrement: () {},
-                  ),
+                  ProductCounter(product: product),
                 ],
               ),
               Row(

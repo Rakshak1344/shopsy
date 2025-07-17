@@ -1,3 +1,4 @@
+import 'package:app/features/cart/views/cart_page.dart';
 import 'package:app/features/products/views/product_detail_page.dart';
 import 'package:app/features/products/views/products_page.dart';
 import 'package:app/navigation/app_route_name.dart';
@@ -22,6 +23,13 @@ class RoutesProvider extends RouteProvider {
                 state.uri.queryParameters['productId'].toString(),
               );
               return ProductDetailPage(productId: productId);
+            },
+          ),
+          GoRoute(
+            path: 'cart',
+            name: AppRouteName.cart,
+            builder: (BuildContext context, GoRouterState state) {
+              return CartPage();
             },
           ),
         ],

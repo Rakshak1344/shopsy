@@ -15,33 +15,6 @@ class ProductGridItem extends StatefulWidget {
 }
 
 class _ProductGridItemState extends State<ProductGridItem> {
-  int _quantity = 0;
-
-  /// Increments the quantity, respecting the available stock.
-  void _increment() {
-    if (_quantity < widget.product.availableQuantity) {
-      setState(() => _quantity++);
-      return;
-    }
-
-    // Show a snackbar if the user tries to exceed available stock
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("You've reached the stock limit for this item."),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
-  /// Decrements the quantity. The UI reverts to the 'Add' button at zero.
-  void _decrement() {
-    if (_quantity > 0) {
-      setState(() {
-        _quantity--;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool isOutOfStock = widget.product.availableQuantity == 0;
@@ -77,12 +50,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("\$${widget.product.price.toStringAsFixed(2)}"),
-                    ProductCounter(
-                      quantity: _quantity,
-                      availableQuantity: widget.product.availableQuantity,
-                      onIncrement: _increment,
-                      onDecrement: _decrement,
-                    ),
+                    ProductCounter(product: widget.product),
                   ],
                 ),
               ],
