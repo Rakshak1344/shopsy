@@ -13,6 +13,7 @@ class CartItem extends HiveObject with _$CartItem {
   factory CartItem({
     @HiveField(0) required int productId,
     @HiveField(1) required int quantity,
+    @HiveField(2) required DateTime createdAt,
   }) = _CartItem;
 
   factory CartItem.fromJson(Map<String, Object?> json) =>

@@ -1,3 +1,6 @@
+import 'dart:convert'; // Required for jsonDecode
+import 'package:flutter/services.dart'; // Required for rootBundle
+
 import 'package:app/features/products/data/models/product.dart';
 import 'package:app/features/products/repositories/network_product_repository.dart';
 import 'package:core/data/generics/links.dart';
@@ -7,22 +10,10 @@ import 'package:dio/dio.dart';
 
 ///
 /// This class mimics the behavior of the real network repository by returning
-/// pre-defined mock data with a simulated network delay.
+/// pre-defined mock data from a JSON file with a simulated network delay.
 class FakeNetworkProductRepository implements NetworkProductRepository {
-
-  /// A list of mock products to serve.
-  final List<Product> _mockProducts = List.generate(
-    25,
-    (i) => Product(
-      id: i + 1,
-      name: 'Product ${i + 1}',
-      description:
-          'This is a detailed and engaging description for mock product number ${i + 1}.',
-      imageUrl: 'https://picsum.photos/id/${i + 1}/600/400',
-      availableQuantity: (i + 1) * 5,
-      price: 19.99 * (i + 1), // Added the new price field
-    ),
-  );
+  /// A list of mock products loaded from the assets.
+  List<Product> _mockProducts = [];
 
   /// Simulates a network delay.
   final Duration delay;
@@ -31,17 +22,31 @@ class FakeNetworkProductRepository implements NetworkProductRepository {
     this.delay = const Duration(milliseconds: 800),
   });
 
+  /// Loads and parses product data from the 'assets/products.json' file.
+  /// This must be called before using the repository.
+  Future<void> initialize() async {
+    // Load the JSON string from the asset file
+    final jsonString = await rootBundle.loadString('assets/products.json');
+    // Decode the JSON string into a List<dynamic>
+    final List<dynamic> jsonList = jsonDecode(jsonString);
+    // Map the JSON list to a List<Product> using the fromJson factory
+    _mockProducts = jsonList.map((json) => Product.fromJson(json)).toList();
+  }
+
   @override
   Future<PagedResponse<Product>> getProducts(
     int page, [
     int perPage = 10,
   ]) async {
+    // Ensure data is loaded before proceeding
+    if (_mockProducts.isEmpty) {
+      await initialize();
+    }
     await Future.delayed(delay);
 
     final int totalProducts = _mockProducts.length;
     final int totalPages = (totalProducts / perPage).ceil();
 
-    // Simulate reaching the end of the data
     if (page > totalPages) {
       return PagedResponse<Product>(
         [],
@@ -61,7 +66,6 @@ class FakeNetworkProductRepository implements NetworkProductRepository {
       );
     }
 
-    // Calculate the start and end index for the current page
     final int startIndex = (page - 1) * perPage;
     final int endIndex =
         (startIndex + perPage > totalProducts)
@@ -92,17 +96,18 @@ class FakeNetworkProductRepository implements NetworkProductRepository {
 
   @override
   Future<ObjectResponse<Product>> getById(String productId) async {
+    // Ensure data is loaded before proceeding
+    if (_mockProducts.isEmpty) {
+      await initialize();
+    }
     await Future.delayed(delay);
 
     final int? id = int.tryParse(productId);
     final product = _mockProducts.where((p) => p.id == id).firstOrNull;
 
     if (product != null) {
-      // Simulate a successful response
       return ObjectResponse<Product>(product);
     } else {
-      // Simulate a "404 Not Found" error, which is what a real API would do.
-      // This makes your error handling logic in the app testable.
       throw DioException(
         requestOptions: RequestOptions(path: '/products/$productId'),
         response: Response(

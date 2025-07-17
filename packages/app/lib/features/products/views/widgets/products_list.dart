@@ -49,9 +49,11 @@ class _ProductsListState extends ConsumerState<ProductsList> {
   }
 
   Future<void> onPullToRefreshProducts() async {
+    var productsState = ref.read(productStateProvider.notifier);
+    await productsState.removeCachedProducts();
     page = 1;
     hasMore = true;
-    await ref.read(productStateProvider.notifier).fetchProducts();
+    await productsState.fetchProducts();
   }
 
   void listenTransactionState() {

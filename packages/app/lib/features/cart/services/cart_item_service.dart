@@ -26,7 +26,7 @@ class CartItemService {
     var cartItem = _localCartItemRepository.getByProductId(productId);
     if (cartItem == null) {
       _localCartItemRepository.saveOne(
-        CartItem(productId: productId, quantity: 1),
+        CartItem(productId: productId, quantity: 1, createdAt: DateTime.now()),
       );
       return;
     }
