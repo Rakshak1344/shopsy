@@ -23,12 +23,12 @@ class ProductService {
 
   Stream<List<Product>> watch() => _localProductRepository.watch();
 
-  Stream<Product> fetchProductById(String id) {
+  Stream<Product> fetchProductById(int id) {
     _networkProductRepository
-        .getById(id)
+        .getById(id.toString())
         .then((response) => _localProductRepository.save([response.data]));
 
-    return _localProductRepository.getById(int.parse(id));
+    return _localProductRepository.getById(id);
   }
 
   Future<void> getProducts(int page, [int perPage = 20]) async {

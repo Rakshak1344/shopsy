@@ -1,12 +1,10 @@
 import 'package:app/features/products/data/models/product.dart';
-import 'package:app/features/products/views/states/product_grid_item.dart';
-import 'package:app/features/products/views/states/product_list_tile.dart';
+import 'package:app/features/products/views/widgets/product_grid_item.dart';
 import 'package:app/features/products/views/states/product_state.dart';
 import 'package:core/error/no_more_data_exception.dart';
 import 'package:core/ui/widgets/paginated_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:core/ui/widgets/paginated_list_view.dart';
 
 class ProductsList extends ConsumerStatefulWidget {
   final List<Product> products;

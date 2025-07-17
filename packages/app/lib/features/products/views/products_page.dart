@@ -1,7 +1,8 @@
 import 'package:app/features/products/data/models/product.dart';
 import 'package:app/features/products/views/states/product_state.dart';
-import 'package:app/features/products/views/states/products_list.dart';
-import 'package:app/features/products/views/states/shimmer_list_tile.dart';
+import 'package:app/features/products/views/widgets/products_list.dart';
+import 'package:app/features/products/views/widgets/shimmer_list_tile.dart';
+
 import 'package:core/error/no_more_data_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,5 +1,5 @@
 import 'package:app/features/products/data/models/product.dart';
-import 'package:app/features/products/views/states/product_counter.dart';
+import 'package:app/features/products/views/widgets/product_counter.dart';
 import 'package:app/navigation/app_route_name.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -93,59 +93,6 @@ class _ProductGridItemState extends State<ProductGridItem> {
     );
   }
 
-  /// Builds the "Add" button or the quantity counter based on the current state.
-  Widget _buildAddOrCounterButton() {
-    final bool isOutOfStock = widget.product.availableQuantity == 0;
-
-    if (_quantity == 0) {
-      return OutlinedButton.icon(
-        icon: const Icon(Icons.add),
-        label: const Text('Add'),
-        onPressed: isOutOfStock ? null : _increment,
-
-        style: OutlinedButton.styleFrom(
-          visualDensity: VisualDensity.compact,
-          side: BorderSide(
-            color:
-                isOutOfStock
-                    ? Colors.grey.shade400
-                    : Theme.of(context).colorScheme.primary,
-          ),
-        ),
-      );
-    } else {
-      // The -/+ counter UI
-      return Container(
-        height: 40,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.remove),
-              onPressed: _decrement,
-              iconSize: 18,
-              splashRadius: 20,
-            ),
-            Text(
-              _quantity.toString(),
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: _increment,
-              iconSize: 18,
-              splashRadius: 20,
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   /// Builds the network image with caching, placeholder, and error widgets.
   Widget _buildImage() {
     return ClipOval(
@@ -183,7 +130,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
   void _onTap(BuildContext context) {
     context.goNamed(
       AppRouteName.productDetail,
-      pathParameters: {'productId': widget.product.id.toString()},
+      queryParameters: {'productId': widget.product.id.toString()},
     );
   }
 
