@@ -1,7 +1,8 @@
 import 'package:app/features/products/data/models/product.dart';
 import 'package:app/features/products/views/widgets/product_counter.dart';
+import 'package:app/features/products/views/widgets/product_image.dart';
 import 'package:app/navigation/app_route_name.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core/utils/extensions/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,38 +16,10 @@ class ProductGridItem extends StatefulWidget {
 }
 
 class _ProductGridItemState extends State<ProductGridItem> {
-  int _quantity = 0;
-
-  /// Increments the quantity, respecting the available stock.
-  void _increment() {
-    if (_quantity < widget.product.availableQuantity) {
-      setState(() => _quantity++);
-      return;
-    }
-
-    // Show a snackbar if the user tries to exceed available stock
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("You've reached the stock limit for this item."),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
-  /// Decrements the quantity. The UI reverts to the 'Add' button at zero.
-  void _decrement() {
-    if (_quantity > 0) {
-      setState(() {
-        _quantity--;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final bool isOutOfStock = widget.product.availableQuantity == 0;
 
-    // Visually disable the card if the product is out of stock
     return Opacity(
       opacity: isOutOfStock ? 0.6 : 1.0,
       child: GestureDetector(
@@ -65,7 +38,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
               children: [
                 Column(
                   children: [
-                    _buildImage(),
+                    ProductImage(imageUrl: widget.product.imageUrl),
                     const SizedBox(height: 12),
                     _buildTitle(context),
                     const SizedBox(height: 4),
@@ -76,52 +49,14 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("\$${widget.product.price.toStringAsFixed(2)}"),
-                    ProductCounter(
-                      quantity: _quantity,
-                      availableQuantity: widget.product.availableQuantity,
-                      onIncrement: _increment,
-                      onDecrement: _decrement,
-                    ),
+                    Text(widget.product.price.formatAsCurrency()),
+                    ProductCounter(product: widget.product),
                   ],
                 ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  /// Builds the network image with caching, placeholder, and error widgets.
-  Widget _buildImage() {
-    return ClipOval(
-      child: CachedNetworkImage(
-        imageUrl: widget.product.imageUrl,
-        height: 60,
-        width: 60,
-        fit: BoxFit.cover,
-        fadeInDuration: const Duration(milliseconds: 300),
-        progressIndicatorBuilder:
-            (context, url, downloadProgress) => CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey[200],
-              child: CircularProgressIndicator(
-                value: downloadProgress.progress,
-                strokeWidth: 2.0,
-                color: Colors.grey[400],
-              ),
-            ),
-        // Your existing error widget is perfect.
-        errorWidget:
-            (context, url, error) => CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.grey[200],
-              child: const Icon(
-                Icons.image_not_supported_outlined,
-                color: Colors.grey,
-              ),
-            ),
       ),
     );
   }

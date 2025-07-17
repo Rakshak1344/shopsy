@@ -12,10 +12,10 @@ class ProductsList extends ConsumerStatefulWidget {
   const ProductsList({super.key, required this.products});
 
   @override
-  ConsumerState<ProductsList> createState() => _TransactionsListState();
+  ConsumerState<ProductsList> createState() => _ProductsListState();
 }
 
-class _TransactionsListState extends ConsumerState<ProductsList> {
+class _ProductsListState extends ConsumerState<ProductsList> {
   int page = 1;
   bool hasMore = true;
 

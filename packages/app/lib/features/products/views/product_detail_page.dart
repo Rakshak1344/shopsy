@@ -28,7 +28,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
     // Watch the provider to get the async state of the product.
     final productAsync = ref.watch(
-      productDetailStateProvider(widget.productId!.toString()),
+      productDetailStateProvider(widget.productId!),
     );
 
     return Scaffold(
@@ -98,12 +98,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ProductCounter(
-                    quantity: 0,
-                    availableQuantity: product.availableQuantity,
-                    onIncrement: () {},
-                    onDecrement: () {},
-                  ),
+                  ProductCounter(product: product),
                 ],
               ),
               Row(

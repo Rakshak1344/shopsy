@@ -1,8 +1,8 @@
+import 'package:app/features/cart/views/widgets/cart_button.dart';
 import 'package:app/features/products/data/models/product.dart';
 import 'package:app/features/products/views/states/product_state.dart';
 import 'package:app/features/products/views/widgets/products_list.dart';
 import 'package:app/features/products/views/widgets/shimmer_list_tile.dart';
-
 import 'package:core/error/no_more_data_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,15 +29,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Shopsy"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () async {
-              await ref.read(productStateProvider.notifier).fetchProducts(1);
-            },
-          ),
-          SizedBox(width: 18),
-        ],
+        actions: [CartButton(), SizedBox(width: 18)],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
