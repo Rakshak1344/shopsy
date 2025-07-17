@@ -1,4 +1,6 @@
 import 'package:app/config/observer.dart';
+import 'package:app/features/products/repositories/fake_network_product_repository.dart';
+import 'package:app/features/products/repositories/network_product_repository.dart';
 import 'package:app/storage/hive/hive_helper.dart';
 import 'package:app/storage/hive/hive_preference.dart';
 import 'package:core/arch/app_config.dart';
@@ -25,9 +27,9 @@ class ShopsyAppConfig extends AppConfig {
   FutureOr<List<Override>> overrides() async {
     return [
       preferenceProvider.overrideWithValue(hivePreferencesInstance),
-      // networkCategoriesRepositoryProvider.overrideWithValue(
-      //   FakeNetworkCategoriesRepository(),
-      // ),
+      networkProductRepositoryProvider.overrideWithValue(
+        FakeNetworkProductRepository(),
+      ),
     ];
   }
 
