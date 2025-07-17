@@ -26,6 +26,11 @@ class LocalCartItemRepository extends CollectionRepository<CartItem> {
 
   @override
   Future<void> save(List<CartItem> data) async {
+    var cartItems = get();
+
+    cartItems = {...cartItems, ...data}.toList();
+    cartItems.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+
     await sharedPreferences.setValue<List<CartItem>>(
       'cartItems',
       data.cast<CartItem>(),
@@ -35,13 +40,15 @@ class LocalCartItemRepository extends CollectionRepository<CartItem> {
   // saveOne
   Future<void> saveOne(CartItem data) async {
     var cartItems = get();
-    var existingItem = getByProductId(data.productId);
+    final index = cartItems.indexWhere(
+      (item) => item.productId == data.productId,
+    );
 
-    if (existingItem != null) {
-      cartItems.remove(existingItem);
+    if (index != -1) {
+      cartItems[index] = data;
+    } else {
+      cartItems.add(data);
     }
-
-    cartItems.add(data);
 
     await sharedPreferences.setValue<List<CartItem>>(
       'cartItems',

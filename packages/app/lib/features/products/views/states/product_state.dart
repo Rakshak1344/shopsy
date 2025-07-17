@@ -20,4 +20,14 @@ class ProductState extends _$ProductState {
       state = AsyncError(e, StackTrace.current);
     }
   }
+
+  Future<void> removeCachedProducts()async {
+    try {
+      state = const AsyncLoading();
+      await _productService.deleteAll();
+      state = const AsyncData([]);
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+    }
+  }
 }

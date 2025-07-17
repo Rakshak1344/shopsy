@@ -31,19 +31,18 @@ class ProductService {
     return _localProductRepository.getById(id);
   }
 
-
-
-  Future<void> getProducts(int page, [int perPage = 10]) async {
+  Future<void> getProducts(int page, [int perPage = 20]) async {
     var response = await _networkProductRepository.getProducts(page, perPage);
-
-    if (page == 1) {
-      await _localProductRepository.deleteAll();
-    }
 
     await _localProductRepository.save(response.data);
 
     if (response.meta.currentPage == response.meta.lastPage) {
       throw NoMoreDataException();
     }
+  }
+
+  // Delete all cached products
+  Future<void> deleteAll() async {
+    await _localProductRepository.deleteAll();
   }
 }

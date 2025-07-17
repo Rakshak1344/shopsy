@@ -23,8 +23,6 @@ class CartListItem extends ConsumerWidget {
           return const ListTile(title: Text('Product not found'));
         }
 
-        final lineItemPrice = product.price * cartItem.quantity;
-
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
           child: Row(
@@ -42,7 +40,7 @@ class CartListItem extends ConsumerWidget {
               SizedBox(
                 width: 70,
                 child: Text(
-                  lineItemPrice.formatAsCurrency(),
+                  (product.price * cartItem.quantity).formatAsCurrency(),
                   textAlign: TextAlign.right,
                   style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
