@@ -2,6 +2,7 @@ import 'package:app/features/products/data/models/product.dart';
 import 'package:app/features/products/views/widgets/product_counter.dart';
 import 'package:app/features/products/views/widgets/product_image.dart';
 import 'package:app/navigation/app_route_name.dart';
+import 'package:core/utils/extensions/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +20,6 @@ class _ProductGridItemState extends State<ProductGridItem> {
   Widget build(BuildContext context) {
     final bool isOutOfStock = widget.product.availableQuantity == 0;
 
-    // Visually disable the card if the product is out of stock
     return Opacity(
       opacity: isOutOfStock ? 0.6 : 1.0,
       child: GestureDetector(
@@ -49,7 +49,7 @@ class _ProductGridItemState extends State<ProductGridItem> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("\$${widget.product.price.toStringAsFixed(2)}"),
+                    Text(widget.product.price.formatAsCurrency()),
                     ProductCounter(product: widget.product),
                   ],
                 ),

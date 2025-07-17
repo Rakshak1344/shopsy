@@ -29,10 +29,11 @@ class LocalProductRepository extends CollectionRepository<Product> {
     var products = get();
 
     products = {...data, ...products}.toList();
+    products.sort((a, b) => a.id.compareTo(b.id));
 
     await sharedPreferences.setValue<List<Product>>(
       'products',
-      data.cast<Product>(),
+      products.cast<Product>(),
     );
   }
 

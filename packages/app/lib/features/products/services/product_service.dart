@@ -33,7 +33,7 @@ class ProductService {
 
 
 
-  Future<void> getProducts(int page, [int perPage = 20]) async {
+  Future<void> getProducts(int page, [int perPage = 10]) async {
     var response = await _networkProductRepository.getProducts(page, perPage);
 
     if (page == 1) {
