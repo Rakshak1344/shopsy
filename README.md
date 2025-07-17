@@ -1,7 +1,7 @@
 # Shopsy
 
-An assignment from PocketFM
-a prototype for a small online store's mobile interface.
+- An assignment from PocketFM, prototype for a small online store's mobile interface.
+
 ---
 Objectives:
 - Product list from local JSON file
